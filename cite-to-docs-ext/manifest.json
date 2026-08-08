@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "ASTRO SEARCH Docs Integrator",
+  "version": "1.1.0",
+  "description": "Integrasi Sitasi Multi-Source ASTRO SEARCH langsung di Google Docs.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "clipboardWrite"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://localhost/*",
+        "*://*.astrosearch.com/*"
+      ],
+      "js": ["content_astro.js"]
+    },
+    {
+      "matches": [
+        "https://docs.google.com/document/*"
+      ],
+      "js": ["content_docs.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "action": {
+    "default_title": "Astro-Search Docs Integrator"
+  }
+}

@@ -1,0 +1,153 @@
+/* styles.css - ASTRO SEARCH Google Docs Native Theme */
+
+/* 1. Menubar Item (Menyamakan persis dengan menu File, Edit, Zotero, dll) */
+#astro-search-menubar-item {
+  /* Hapus semua styling font dan margin! Kita biarkan Google Docs yang mengatur semuanya. */
+  transition: background-color 0.15s ease;
+}
+
+#astro-search-menubar-item:hover {
+  background-color: #f1f3f4;
+  border-radius: 4px;
+}
+
+#astro-search-menubar-item .goog-control-content {
+  color: #202124 !important; /* Paksa warna font agar sama dengan menu lain */
+}
+
+/* 2. Sidebar Container (Sleek Modern Panel) */
+#astro-sidebar-root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  background-color: #ffffff;
+  color: #202124;
+  border-left: 1px solid #dadce0;
+  z-index: 999999;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#astro-sidebar-root.hidden {
+  transform: translateX(100%);
+}
+
+/* Header Sidebar */
+.astro-sidebar-header {
+  background-color: #f8f9fa;
+  padding: 12px 16px;
+  border-bottom: 1px solid #dadce0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.astro-sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a73e8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.astro-sidebar-close {
+  cursor: pointer;
+  color: #5f6368;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 50%;
+}
+
+.astro-sidebar-close:hover {
+  background-color: #e8eaed;
+  color: #202124;
+}
+
+/* Content Area Sidebar */
+.astro-sidebar-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.astro-input-group {
+  margin-bottom: 14px;
+}
+
+.astro-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #5f6368;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.astro-select, .astro-input {
+  width: 100%;
+  padding: 8px 10px;
+  background-color: #ffffff;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  color: #202124;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.astro-select:focus, .astro-input:focus {
+  border-color: #1a73e8;
+}
+
+/* Article Cards */
+.astro-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.astro-card:hover {
+  border-color: #dfb343;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.astro-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #202124;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.astro-card-meta {
+  font-size: 11px;
+  color: #5f6368;
+  margin-bottom: 8px;
+}
+
+.astro-btn-insert {
+  width: 100%;
+  padding: 7px;
+  background-color: #dfb343;
+  color: #000000;
+  font-weight: 600;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.astro-btn-insert:hover {
+  background-color: #c99f38;
+}
