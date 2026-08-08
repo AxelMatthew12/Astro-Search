@@ -15,7 +15,7 @@ import Documentation from './pages/Documentation';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ApiSettings from './pages/ApiSettings';
-import Profile from './pages/ProfileTemp'; // <-- Import added
+import Profile from './pages/Profile'; // <-- Import added
 
 // Import Components & Layout
 import ProtectedRoute from './components/ProtectedRoute';
