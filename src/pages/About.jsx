@@ -38,10 +38,6 @@ export default function About() {
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#dfb343]/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10 max-w-3xl mx-auto space-y-6 animate-fadeIn">
-          <span className="inline-block px-3.5 py-1 rounded-full bg-[#dfb343]/20 border border-[#dfb343]/40 text-[#dfb343] font-mono text-xs uppercase tracking-widest font-bold">
-            About AstroSearch
-          </span>
-          
           <h1 className="font-serif text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight">
             Quiet Authority. <br />
             <span className="italic font-normal text-[#dfb343]">Preferred Focus.</span>

@@ -1,10 +1,11 @@
 // background.js
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // FITUR 1: SIMPAN DAN TERUSKAN SITASI
   if (request.action === "SAVE_AND_FORWARD_CITATION") {
     const articleData = request.payload;
 
-    // 1. Simpan data artikel ke storage lokal extension
+    // Simpan data artikel ke storage lokal extension
     chrome.storage.local.get({ pending_articles: [] }, (result) => {
       const articles = result.pending_articles;
       
@@ -15,7 +16,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       chrome.storage.local.set({ pending_articles: filtered }, () => {
         console.log("Data artikel berhasil disimpan ke chrome.storage.local");
 
-        // 2. Cari apakah ada tab Google Docs yang sedang terbuka
+        // Cari apakah ada tab Google Docs yang sedang terbuka
         chrome.tabs.query({ url: "https://docs.google.com/document/*" }, (tabs) => {
           const docsFound = tabs.length > 0;
 
@@ -34,6 +35,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     });
 
+    return true; // Keep message channel open for async response
+  }
+
+  // FITUR 2 (BARU): CEK STATUS TAB GOOGLE DOCS UNTUK USER LOGIN
+  if (request.action === "CHECK_DOCS_STATUS") {
+    chrome.tabs.query({ url: "https://docs.google.com/document/*" }, (tabs) => {
+      const docsFound = tabs.length > 0;
+      sendResponse({ success: true, isDocsOpen: docsFound });
+    });
     return true; // Keep message channel open for async response
   }
 });

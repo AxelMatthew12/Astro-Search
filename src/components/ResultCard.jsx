@@ -4,9 +4,11 @@ import { Download, Lock, Quote, Check, AlertCircle, Loader2 } from 'lucide-react
 import { sendCitationToDocs, checkExtensionInstalled } from '../utils/citationBridge';
 
 export default function ResultCard({ result }) {
-  // State indikator koneksi otomatis ke Docs
-  const [syncStatus, setSyncStatus] = useState('idle'); // 'idle' | 'checking' | 'success' | 'no-extension'
+  const [syncStatus, setSyncStatus] = useState('idle'); 
   const [toastMessage, setToastMessage] = useState('');
+  
+  // State baru untuk mengatur munculnya Pop-Up Download Ekstensi
+  const [showInstallModal, setShowInstallModal] = useState(false);
 
   const title = result?.title || "Untitled Research Paper";
   const journal = result?.journal || result?.source || "Academic Journal";
@@ -24,21 +26,17 @@ export default function ResultCard({ result }) {
 
   const isOpenAccess = result?.isOpenAccess !== undefined ? result.isOpenAccess : (result?.source === 'ARXIV' || result?.source === 'OPENALEX' || result?.source === 'CORE');
 
-  // --- FUNGSI UTAMA: KONEKSI DIRECT KE GOOGLE DOCS ---
   const handleDirectCiteToDocs = async () => {
     setSyncStatus('checking');
 
-    // 1. Cek apakah Extension terpasang & aktif
     const isInstalled = await checkExtensionInstalled();
 
     if (!isInstalled) {
       setSyncStatus('no-extension');
-      setToastMessage('Extension Astro-Search belum terpasang!');
-      setTimeout(() => setSyncStatus('idle'), 4000);
+      setShowInstallModal(true); // Panggil modal untuk download
       return;
     }
 
-    // 2. Kirim data artikel langsung ke Extension & Google Docs
     const isSent = await sendCitationToDocs(result);
 
     if (isSent) {
@@ -53,17 +51,9 @@ export default function ResultCard({ result }) {
   return (
     <div className="bg-white dark:bg-[#141518] border border-gray-200 dark:border-[#26282d] hover:border-[#dfb343]/50 dark:hover:border-[#dfb343]/50 rounded-xl p-6 transition-all duration-300 shadow-sm relative group mb-4">
       
-      {/* --- NOTIFIKASI TOAST DARI CARD --- */}
       {syncStatus === 'success' && (
         <div className="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 animate-fadeIn z-10">
           <Check size={14} />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {syncStatus === 'no-extension' && (
-        <div className="absolute top-3 right-3 bg-amber-500 text-black text-xs font-semibold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 animate-fadeIn z-10">
-          <AlertCircle size={14} />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -96,7 +86,6 @@ export default function ResultCard({ result }) {
         <span className="font-mono text-[#dfb343] font-bold">{year}</span>
       </div>
 
-      {/* Snippet / Abstract */}
       <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed mb-4">
         {snippet}
       </p>
@@ -108,7 +97,6 @@ export default function ResultCard({ result }) {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* --- TOMBOL CITE TO DOCS OTOMATIS --- */}
           <button
             onClick={handleDirectCiteToDocs}
             disabled={syncStatus === 'checking'}
@@ -148,6 +136,47 @@ export default function ResultCard({ result }) {
           </a>
         </div>
       </div>
+
+      {/* MODAL INSTALL EXTENSION */}
+      {showInstallModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#141518] p-6 rounded-xl shadow-2xl max-w-sm text-center border border-[#dfb343] animate-fadeIn">
+            <div className="flex justify-center mb-4">
+              <div className="bg-[#dfb343]/20 p-3 rounded-full">
+                <AlertCircle size={32} className="text-[#dfb343]" />
+              </div>
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Pasang Ekstensi Astro-Search</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+              Untuk menggunakan fitur <b>Cite to Docs</b>, Anda perlu memasang ekstensi browser kami agar terhubung langsung dengan Google Docs Anda.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => {
+                  setShowInstallModal(false);
+                  setSyncStatus('idle'); // Reset tombol kembali ke mode awal
+                }}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg text-sm transition-colors"
+              >
+                Nanti Saja
+              </button>
+              <a
+                href="https://chrome.google.com/webstore/detail/YOUR_EXTENSION_ID_HERE" // GANTI DENGAN LINK CHROME WEBSTORE ASLI
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-[#dfb343] hover:bg-[#c99f30] text-black font-bold rounded-lg text-sm transition-colors shadow-lg"
+                onClick={() => {
+                  setShowInstallModal(false);
+                  setSyncStatus('idle');
+                }}
+              >
+                Download Sekarang
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
